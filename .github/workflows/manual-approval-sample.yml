@@ -9,7 +9,7 @@ jobs:
     environment: stg
     steps:
       - name: Echo STG
-        run: echo "Deploying to STG... COMMENT=${{ secrets.COMMENT }}"
+        run: echo "Deploying to STG... COMMENT=${{ vars.COMMENT }}"
 
   deploy-prd:
     needs: deploy-stg
@@ -18,4 +18,4 @@ jobs:
       name: prd
     steps:
       - name: Echo PRD
-        run: echo "Deploying to PRD... COMMENT=${{ secrets.COMMENT }}"
+        run: echo "Deploying to PRD... COMMENT=${{ vars.COMMENT }}"
