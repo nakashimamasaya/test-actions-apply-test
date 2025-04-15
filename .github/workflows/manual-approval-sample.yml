@@ -1,0 +1,21 @@
+name: Deploy with Approval
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-stg:
+    runs-on: ubuntu-latest
+    environment: stg
+    steps:
+      - name: Echo STG
+        run: echo "Deploying to STG... COMMENT=${{ secrets.COMMENT }}"
+
+  deploy-prd:
+    needs: deploy-stg
+    runs-on: ubuntu-latest
+    environment:
+      name: prd
+    steps:
+      - name: Echo PRD
+        run: echo "Deploying to PRD... COMMENT=${{ secrets.COMMENT }}"
