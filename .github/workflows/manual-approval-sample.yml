@@ -2,6 +2,8 @@ name: Deploy with Approval
 
 on:
   workflow_dispatch:
+    branches:
+      - main
 
 jobs:
   deploy-stg:
