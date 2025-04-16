@@ -5,8 +5,12 @@ on:
     branches:
       - main
 
+permissions:
+  actions: write
+
 jobs:
   deploy-stg:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: stg
     steps:
@@ -14,6 +18,7 @@ jobs:
         run: echo "Deploying to STG... COMMENT=${{ vars.COMMENT }}"
 
   deploy-prd:
+    if: github.ref == 'refs/heads/main'
     needs: deploy-stg
     runs-on: ubuntu-latest
     environment:
