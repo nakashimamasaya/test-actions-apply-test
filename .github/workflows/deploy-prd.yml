@@ -1,4 +1,4 @@
-name: Deploy to PRD
+name: Deploy to PRD (with approval)
 
 on:
   release:
@@ -7,23 +7,26 @@ on:
 concurrency: ${{ github.workflow }}
 
 jobs:
-  echo-prd:
-    name: Echo for PRD Deploy
+  notify-prd-approval:
+    name: Notify for PRD Approval
     runs-on: ubuntu-latest
-    environment: prd
     steps:
-      - name: Echo deployment info
+      - name: Echo Slack-like notification
         run: |
-          echo "🚀 PRD デプロイを開始します"
-          echo "対象リリース: ${{ github.event.release.tag_name }}"
-          echo "Pre-release 判定: ${{ github.event.release.prerelease }}"
+          echo "⚠️ PRDデプロイが要求されました。"
+          echo "リリース: ${{ github.event.release.tag_name }}"
+          echo "承認を待っています..."
           echo "実行リンク: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
-  notify-failure:
-    name: Notify PRD Failure
-    if: ${{ failure() || cancelled() }}
+  deploy-prd:
+    name: PRD Deploy Execution
+    needs: notify-prd-approval
     runs-on: ubuntu-latest
-    environment: prd
-    needs: echo-prd
+    environment:
+      name: prd
     steps:
-      - run: echo "❌ PRD デプロイが失敗またはキャンセルされました"
+      - name: Echo PRD Execution
+        run: |
+          echo "✅ PRD デプロイを開始します（承認済）"
+          echo "リリース: ${{ github.event.release.tag_name }}"
+          echo "開始時間: $(date)"
