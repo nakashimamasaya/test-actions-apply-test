@@ -1,0 +1,29 @@
+name: Deploy to PRD
+
+on:
+  release:
+    types: [released]
+
+concurrency: ${{ github.workflow }}
+
+jobs:
+  echo-prd:
+    name: Echo for PRD Deploy
+    runs-on: ubuntu-latest
+    environment: prd
+    steps:
+      - name: Echo deployment info
+        run: |
+          echo "🚀 PRD デプロイを開始します"
+          echo "対象リリース: ${{ github.event.release.tag_name }}"
+          echo "Pre-release 判定: ${{ github.event.release.prerelease }}"
+          echo "実行リンク: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+  notify-failure:
+    name: Notify PRD Failure
+    if: ${{ failure() || cancelled() }}
+    runs-on: ubuntu-latest
+    environment: prd
+    needs: echo-prd
+    steps:
+      - run: echo "❌ PRD デプロイが失敗またはキャンセルされました"

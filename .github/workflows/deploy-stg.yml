@@ -1,0 +1,29 @@
+name: Deploy to STG
+
+on:
+  push:
+    tags:
+      - "release_[0-9]+"
+
+concurrency: ${{ github.workflow }}
+
+jobs:
+  echo-stg:
+    name: Echo for STG Deploy
+    runs-on: ubuntu-latest
+    environment: stg
+    steps:
+      - name: Echo deployment info
+        run: |
+          echo "🚀 STG デプロイを開始します"
+          echo "対象タグ: ${GITHUB_REF#refs/tags/}"
+          echo "実行リンク: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+  notify-failure:
+    name: Notify STG Failure
+    if: ${{ failure() || cancelled() }}
+    runs-on: ubuntu-latest
+    environment: stg
+    needs: echo-stg
+    steps:
+      - run: echo "❌ STG デプロイが失敗またはキャンセルされました"
