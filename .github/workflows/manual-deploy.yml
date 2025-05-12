@@ -29,11 +29,11 @@ jobs:
           echo "🔍 入力の妥当性を検証中..."
           REF="${{ github.event.inputs.ref_name }}"
           ENV="${{ github.event.inputs.environment }}"
+          REPO_URL="https://github.com/${GITHUB_REPOSITORY}.git"
 
-          # タグかブランチかを判定
-          if git ls-remote --tags origin "refs/tags/${REF}" | grep -q .; then
+          if git ls-remote --tags "$REPO_URL" "refs/tags/${REF}" | grep -q .; then
             REF_TYPE="tag"
-          elif git ls-remote --heads origin "refs/heads/${REF}" | grep -q .; then
+          elif git ls-remote --heads "$REPO_URL" "refs/heads/${REF}" | grep -q .; then
             REF_TYPE="branch"
           else
             echo "❌ エラー: 入力された '${REF}' は存在しないタグ・ブランチです"
