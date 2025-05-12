@@ -67,9 +67,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: deploy
     steps:
-        - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-        - name: Set variables
+      - name: Set variables
         id: vars
         run: |
             echo "TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_OUTPUT
@@ -77,25 +77,25 @@ jobs:
             echo "ENV_NAME=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
             echo "ACTOR=${{ github.actor }}" >> $GITHUB_OUTPUT
 
-        - name: Install yq
+      - name: Install yq
         run: |
             sudo apt-get update && sudo apt-get install -y jq
             curl -L https://github.com/mikefarah/yq/releases/download/v4.35.1/yq_linux_amd64 -o /usr/local/bin/yq
             chmod +x /usr/local/bin/yq
 
-        - name: Ensure YAML file exists
+      - name: Ensure YAML file exists
         run: |
             mkdir -p .release-state
             touch .release-state/releases.yml
             [ -s .release-state/releases.yml ] || echo "{}" > .release-state/releases.yml
 
-        - name: Update releases.yml
+      - name: Update releases.yml
         run: |
             yq -i ".${{ steps.vars.outputs.ENV_NAME }}.ref = \"${{ steps.vars.outputs.REF_NAME }}\"" .release-state/releases.yml
             yq -i ".${{ steps.vars.outputs.ENV_NAME }}.deployed_at = \"${{ steps.vars.outputs.TIME }}\"" .release-state/releases.yml
             yq -i ".${{ steps.vars.outputs.ENV_NAME }}.deployed_by = \"${{ steps.vars.outputs.ACTOR }}\"" .release-state/releases.yml
 
-        - name: Commit and push
+      - name: Commit and push
         run: |
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
