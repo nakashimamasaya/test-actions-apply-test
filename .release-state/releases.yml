@@ -6,3 +6,7 @@ stg:
   ref: release_2025050801
   deployed_at: "2025-05-12T10:50:54Z"
   deployed_by: nakashimamasaya
+prd:
+  ref: release_2025050801
+  deployed_at: "2025-05-12T11:11:05Z"
+  deployed_by: nakashimamasaya
