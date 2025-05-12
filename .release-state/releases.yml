@@ -1,6 +1,6 @@
 rc:
-  ref: test
-  deployed_at: "2025-05-12T10:52:36Z"
+  ref: main
+  deployed_at: "2025-05-12T11:09:32Z"
   deployed_by: nakashimamasaya
 stg:
   ref: release_2025050801
