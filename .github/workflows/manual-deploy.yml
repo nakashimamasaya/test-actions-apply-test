@@ -1,0 +1,61 @@
+name: Recover Deploy (multi-environment with validation)
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref_name:
+        description: "タグ or ブランチ名（例: v1.2.3, main）"
+        required: true
+      environment:
+        description: "デプロイ環境"
+        required: true
+        type: choice
+        options:
+          - rc
+          - pre-stg1
+          - pre-stg2
+          - pre-stg3
+          - pre-stg4
+          - pre-stg5
+          - stg
+          - prd
+
+jobs:
+  input-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate ref and environment match
+        run: |
+          echo "🔍 入力の妥当性を検証中..."
+          REF="${{ github.event.inputs.ref_name }}"
+          ENV="${{ github.event.inputs.environment }}"
+
+          # タグかブランチかを判定
+          if git ls-remote --tags origin "refs/tags/${REF}" | grep -q .; then
+            REF_TYPE="tag"
+          elif git ls-remote --heads origin "refs/heads/${REF}" | grep -q .; then
+            REF_TYPE="branch"
+          else
+            echo "❌ エラー: 入力された '${REF}' は存在しないタグ・ブランチです"
+            exit 1
+          fi
+
+          echo "✅ 検出された ${REF} は ${REF_TYPE} です"
+
+          if [[ "${ENV}" =~ ^(stg|prd)$ && "${REF_TYPE}" != "tag" ]]; then
+            echo "❌ '${ENV}' にはタグのみ指定可能ですが、'${REF}' はブランチです"
+            exit 1
+          fi
+
+          echo "✅ 入力検証クリア: '${REF}' を '${ENV}' にデプロイします"
+
+  deploy:
+    name: PRD Deploy Execution
+    needs: input-validate
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Echo deployment
+        run: |
+          echo "🚀 環境 '${{ github.event.inputs.environment }}' に '${{ github.event.inputs.ref_name }}' をデプロイします"
