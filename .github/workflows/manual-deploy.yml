@@ -3,9 +3,6 @@ name: Recover Deploy (multi-environment with validation)
 on:
   workflow_dispatch:
     inputs:
-      ref_name:
-        description: "タグ or ブランチ名（例: v1.2.3, main）"
-        required: true
       environment:
         description: "デプロイ環境"
         required: true
@@ -19,6 +16,9 @@ on:
           - pre-stg5
           - stg
           - prd
+      ref_name:
+        description: "タグ or ブランチ名（例: v1.2.3, main）"
+        required: true
 
 jobs:
   input-validate:
