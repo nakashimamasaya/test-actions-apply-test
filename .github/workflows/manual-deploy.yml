@@ -52,7 +52,7 @@ jobs:
           echo "✅ 入力検証クリア: '${REF}' を '${ENV}' にデプロイします"
 
   deploy:
-    name: PRD Deploy Execution
+    name: Deploy
     needs: input-validate
     runs-on: ubuntu-latest
     environment:
