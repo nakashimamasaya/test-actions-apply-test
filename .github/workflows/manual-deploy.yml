@@ -106,4 +106,4 @@ jobs:
             git commit -m "update release record: ${{ steps.vars.outputs.ENV_NAME }} => ${{ steps.vars.outputs.REF_NAME }}"
             git push
         env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GITHUB_TOKEN: ${{ secrets.NAKA_PAT }}
