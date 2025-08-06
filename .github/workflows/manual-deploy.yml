@@ -97,7 +97,7 @@ jobs:
 
       - name: Commit and push
         run: |
-            git config user.name "nakashima-masaya"
+            git config user.name "nakashimamasaya"
             git config user.email "nakanaka1826@gmail.com"
             git add .release-state/releases.yml
             git commit -m "update release record: ${{ steps.vars.outputs.ENV_NAME }} => ${{ steps.vars.outputs.REF_NAME }}"
