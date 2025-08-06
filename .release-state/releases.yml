@@ -3,8 +3,8 @@ rc:
   deployed_at: "2025-05-12T11:09:32Z"
   deployed_by: nakashimamasaya
 stg:
-  ref: release_2025050801
-  deployed_at: "2025-05-12T10:50:54Z"
+  ref: release_2025080601
+  deployed_at: "2025-08-06T04:23:05Z"
   deployed_by: nakashimamasaya
 prd:
   ref: release_2025050801
