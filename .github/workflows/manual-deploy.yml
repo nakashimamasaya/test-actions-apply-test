@@ -100,6 +100,8 @@ jobs:
 
       - name: Commit and push
         run: |
+            git config user.name "nakashimamasaya"
+            git config user.email "nakanaka1826@gmail.com"
             git remote set-url origin https://nakashimamasaya:${BOT_PAT}@github.com/nakashimamasaya/test-actions-apply-test.git
             git add .release-state/releases.yml
             git commit -m "update release record: ${{ steps.vars.outputs.ENV_NAME }} => ${{ steps.vars.outputs.REF_NAME }}"
